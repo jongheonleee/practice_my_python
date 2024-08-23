@@ -29,9 +29,13 @@ class Vector :
     return (bytes([ord(self.typecode)]) + bytes(self._components))
 
   def __eq__(self, other):
-    return (len(self) == len(other)
-            and
+    if isinstance(other, Vector) :
+      return (len(self) == len(other) and
             all(a == b for a, b in zip(self, other)))
+    else :
+      return NotImplemented
+
+
 
   def __hash__(self):
     hashes = (hash(x) for x in self)
@@ -69,6 +73,34 @@ class Vector :
 
     msg = '{.__name__!r} object has no attribute {!r}'
     raise AttributeError(msg.format(cls, name))
+
+  def __add__(self, other):
+    try :
+      pairs = itertools.zip_longest(self, other, fillvalue=0.0)
+      return Vector(a + b for a, b in pairs)
+    except TypeError :
+      return NotImplemented
+
+  def __radd__(self, other):
+    return self + other
+
+  def __mul__(self, scalar):
+    if isinstance(scalar, numbers.Real) :
+      return Vector(n * scalar for n in self)
+    else :
+      return NotImplemented
+
+  def __rmul__(self, scalar):
+    return self * scalar
+
+  def __matmul__(self, other):
+    try :
+      return sum(a * b for a, b in zip(self, other))
+    except TypeError :
+      return NotImplemented
+
+  def __rmatmul__(self, other):
+    return self @ other
 
   def angle(self, n) :
     r = math.sqrt(sum(x * x for x in self[n:]))
