@@ -5,6 +5,8 @@
 ### 📌 학습 과정 소개
 > 1. 학습 테스트 코드를 작성해서 구현해야할 객체를 분석합니다.
 > 2. 학습 테스트 코드를 기반으로 객체를 구현합니다(일종의 TDD 적용)
+> 3. 기존의 학습 테스트 코드를 TDD로서 활용합니다. 즉, 분석한 객체 부분을 구현할 객체로 대체합니다.
+
 
 ### 🧑🏻‍🏫 학습 과정 구체적으로 소개 
 
@@ -341,4 +343,28 @@ class TestVector2d_v0(TestCase):
 
 ```
 
-- TDD 적용 하면서 점진적으로 구현 
+- TDD 적용 하면서 점진적으로 구현
+- 밑에 예시는 " 1. 생성자 호출 : __init__() 테스트 완료" 한 시점
+```python
+class MyVector2d :
+
+  def __init__(self, x, y):
+    """객체의 iv를 초기화함"""
+    # iv 초기화
+    self.x = float(x)
+    self.y = float(y)
+
+  def __iter__(self):
+    """객체를 시퀀스처럼 사용할 수 있게함. 즉, 일일이 값 꺼내는 지능형 제너레이터 만듦"""
+    # iv를 일일이 뽑아주는 제너레이터를 반환함
+    return (i for i in (self.x, self.y))
+
+  def __eq__(self, other):
+    """객체의 동등성을 비교하기 위함"""
+    # 같은 타입인지 확인, 아니면 TypeError
+    if not isinstance(other, MyVector2d) :
+      raise TypeError
+
+    # __iter__를 호출해서 모든 iv의 값이 일치하는지 확인
+    return all(a == b for a, b in zip(self, other))
+```
