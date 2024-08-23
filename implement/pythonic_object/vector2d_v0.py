@@ -34,5 +34,3 @@ class Vector2d:
   def __bool__(self):
     return bool(abs(self))
 
-b = Vector2d(10.0, 25.0)
-print(b.__abs__())

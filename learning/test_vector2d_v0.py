@@ -1,5 +1,6 @@
 from unittest import TestCase
 from implement.pythonic_object.vector2d_v0 import Vector2d
+from my_implement.my_vector2d_v0 import MyVector2d
 
 # Vector 학습 및 검증 테스트 코드
 class TestVector2d_v0(TestCase):
@@ -52,6 +53,7 @@ class TestVector2d_v0(TestCase):
   ### - iv가 0, 0를 가지고 있음 -> False
   ### - iv가 1.0, 2.0을 가지고 있음 -> True
   ### - iv가 10.0, 25.0을 가지고 있음 -> True
+
 
   # 1. 생성자 호출 테스트 로직
   def run_success_create_test_with_params(self, func, param, expected):
