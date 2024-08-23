@@ -10,7 +10,7 @@
 
 - 구현할 객체(플루언트 파이썬 책에 나온 객체)
 
-```
+```python
 from array import array
 import math
 
@@ -53,7 +53,7 @@ class Vector2d:
   - 학습 목록 작성. 일종의 기능 분석 
   - 그에 맞는 테스트 코드 작성
   
-```
+```python
 from unittest import TestCase
 from implement.pythonic_object.vector2d_v0 import Vector2d # 분석 대상이 되는 클래스
 from my_implement.my_vector2d_v0 import MyVector2d # 추후에 구현할 클래스 
