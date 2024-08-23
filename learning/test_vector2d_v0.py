@@ -3,7 +3,7 @@ from implement.pythonic_object.vector2d_v0 import Vector2d
 from my_implement.my_vector2d_v0 import MyVector2d
 
 # Vector 학습 및 검증 테스트 코드
-class TestVector2d_v0(TestCase):
+class TestMyVector2d_v0(TestCase):
   # 테스트 대상 기능 목록 및 테스트 범위 작성
   # 1. 생성자 호출 : __init__()
   ### - 매개변수 두개로 이루어진 튜플 전달할 경우 성공적으로 인스턴스를 생성함
@@ -20,10 +20,10 @@ class TestVector2d_v0(TestCase):
   ### - iv를 10.0, 25.0를 가지고 있음, 10.0, 25.0를 반복해서 출력하는 제너레이터를 생성함
 
   # 3. 객체 문자열 표현(개발자) : __repr__()
-  ### > 출력 형식 예시 : Vector2d(1.0, 2.0)
-  ### - iv를 1, 2를 가지고 있음 -> Vector2d(1.0, 2.0)
-  ### - iv를 1.0, 2.0을 가지고 있음 -> Vector2d(1.0, 2.0)
-  ### - iv를 10.0, 25.0을 가지고 있음 -> Vector2d(10.0, 25.0)
+  ### > 출력 형식 예시 : MyVector2d(1.0, 2.0)
+  ### - iv를 1, 2를 가지고 있음 -> MyVector2d(1.0, 2.0)
+  ### - iv를 1.0, 2.0을 가지고 있음 -> MyVector2d(1.0, 2.0)
+  ### - iv를 10.0, 25.0을 가지고 있음 -> MyVector2d(10.0, 25.0)
 
   # 4. 객체 문자열 표현(개발자) : __str__()
   ### > 출력 형식 예시 : (1.0, 2.0)
@@ -57,14 +57,18 @@ class TestVector2d_v0(TestCase):
 
   # 1. 생성자 호출 테스트 로직
   def run_success_create_test_with_params(self, func, param, expected):
+    # 객체 생성 (__init__)
     actual = func(*param)
-    self.assertEquals(actual, expected)
-    print(actual.__bytes__())
 
+    # 객체 동등성 비교 (__eq__, 없으면 메모리 값으로 비교)
+    self.assertEquals(actual, expected)
+
+    # 객체 iv 값 비교(__iter__ 뽑아내서 각 각 비교)
     for a, b in zip(actual, expected) :
       self.assertEquals(a, b)
 
   def run_fail_create_test_with_params(self, func, param, expected):
+    # 기대한 예외 발생
     with self.assertRaises(expected) as context :
       func(param)
 
@@ -73,28 +77,28 @@ class TestVector2d_v0(TestCase):
     # 성공 테스트 더미
     success_dummy = [
       # 매개변수가 2개이며 타입이 숫자형인 경우
-      (Vector2d, (1, 2), Vector2d(1, 2)),
-      (Vector2d, (10.0, 12.0), Vector2d(10.0, 12.0)),
-      (Vector2d, (0.5, 3.4), Vector2d(0.5, 3.4))
+      (MyVector2d, (1, 2), MyVector2d(1, 2)),
+      (MyVector2d, (10.0, 12.0), MyVector2d(10.0, 12.0)),
+      (MyVector2d, (0.5, 3.4), MyVector2d(0.5, 3.4))
     ]
 
 
     # 실패 테스트 더미
     fail_dummy = [
       ### 매개변수 타입 충족 x
-      (Vector2d, (None, None), TypeError),
-      (Vector2d, 'abcd', TypeError),
-      (Vector2d, ('!@#$', '!@#'), TypeError),
-      (Vector2d, ('a', 'b'), TypeError),
+      (MyVector2d, (None, None), TypeError),
+      (MyVector2d, 'abcd', TypeError),
+      (MyVector2d, ('!@#$', '!@#'), TypeError),
+      (MyVector2d, ('a', 'b'), TypeError),
 
       ### 매개변수 개수 충족 x
-      (Vector2d, (), TypeError),
-      (Vector2d, (10.0), TypeError),
+      (MyVector2d, (), TypeError),
+      (MyVector2d, (10.0), TypeError),
 
       # 매개변수가 2개보다 많지만, 타입이 숫자형인 경우
-      (Vector2d, (1, 2, 3, 4), TypeError),
-      (Vector2d, (10.0, 12.0, 23, 24), TypeError),
-      (Vector2d, (0.5, 3.4, 0.1), TypeError)
+      (MyVector2d, (1, 2, 3, 4), TypeError),
+      (MyVector2d, (10.0, 12.0, 23, 24), TypeError),
+      (MyVector2d, (0.5, 3.4, 0.1), TypeError)
     ]
 
 
@@ -112,7 +116,7 @@ class TestVector2d_v0(TestCase):
   def run_success_iterator_test_with_params(self, func, param, expected):
     # 벡터 생성
     actual = func(*param)
-    self.assertIsInstance(actual, Vector2d)
+    self.assertIsInstance(actual, MyVector2d)
 
     # 제너레이터 조회
     actual_iterator = actual.__iter__()
@@ -125,9 +129,9 @@ class TestVector2d_v0(TestCase):
   def test_iterator(self):
     # 성공 테스트 더미
     success_dummy = [
-      (Vector2d, (1, 2), (i for i in (1, 2))),
-      (Vector2d, (1.0, 2.0), (i for i in (1.0, 2.0))),
-      (Vector2d, (10.0, 25.0), (i for i in (10.0, 25.0)))
+      (MyVector2d, (1, 2), (i for i in (1, 2))),
+      (MyVector2d, (1.0, 2.0), (i for i in (1.0, 2.0))),
+      (MyVector2d, (10.0, 25.0), (i for i in (10.0, 25.0)))
     ]
 
     # 성공 테스트 실행
@@ -148,9 +152,9 @@ class TestVector2d_v0(TestCase):
   def test_repr(self):
     # 성공 테스트 더미
     success_dummy = [
-      (Vector2d, (1, 2), 'Vector2d(1.0, 2.0)'),
-      (Vector2d, (10.0, 12.0), 'Vector2d(10.0, 12.0)'),
-      (Vector2d, (0.5, 3.4), 'Vector2d(0.5, 3.4)')
+      (MyVector2d, (1, 2), 'MyVector2d(1.0, 2.0)'),
+      (MyVector2d, (10.0, 12.0), 'MyVector2d(10.0, 12.0)'),
+      (MyVector2d, (0.5, 3.4), 'MyVector2d(0.5, 3.4)')
     ]
 
     # 성공 테스트 실행
@@ -171,9 +175,9 @@ class TestVector2d_v0(TestCase):
   def test_str(self):
     # 성공 데이터 더미
     success_dummy = [
-      (Vector2d, (1, 2), '(1.0, 2.0)'),
-      (Vector2d, (10.0, 12.0), '(10.0, 12.0)'),
-      (Vector2d, (0.5, 3.4), '(0.5, 3.4)')
+      (MyVector2d, (1, 2), '(1.0, 2.0)'),
+      (MyVector2d, (10.0, 12.0), '(10.0, 12.0)'),
+      (MyVector2d, (0.5, 3.4), '(0.5, 3.4)')
     ]
 
     # 성공 테스트 실행
@@ -197,9 +201,9 @@ class TestVector2d_v0(TestCase):
   def test_bytes(self):
     # 성공 테스트 더미
     success_dummy = [
-      (Vector2d, (1, 2), "b'd\x00\x00\x00\x00\x00\x00\xf0?\x00\x00\x00\x00\x00\x00\x00@'"),
-      (Vector2d, (10.0, 12.0), "b'd\x00\x00\x00\x00\x00\x00$@\x00\x00\x00\x00\x00\x00(@'"),
-      (Vector2d, (0.5, 3.4), "b'd\x00\x00\x00\x00\x00\x00\xe0?333333\x0b@'")
+      (MyVector2d, (1, 2), "b'd\x00\x00\x00\x00\x00\x00\xf0?\x00\x00\x00\x00\x00\x00\x00@'"),
+      (MyVector2d, (10.0, 12.0), "b'd\x00\x00\x00\x00\x00\x00$@\x00\x00\x00\x00\x00\x00(@'"),
+      (MyVector2d, (0.5, 3.4), "b'd\x00\x00\x00\x00\x00\x00\xe0?333333\x0b@'")
     ]
 
     # 성공 테스트 실행
@@ -223,9 +227,9 @@ class TestVector2d_v0(TestCase):
   def test_eq(self):
     # 더미 데이터
     dummy = [
-      (Vector2d, (1, 2), (1, 2), True),
-      (Vector2d, (1, 2), (1.0, 2.0), True),
-      (Vector2d, (1.0, 2.0), (10.0, 25.0), False)
+      (MyVector2d, (1, 2), (1, 2), True),
+      (MyVector2d, (1, 2), (1.0, 2.0), True),
+      (MyVector2d, (1.0, 2.0), (10.0, 25.0), False)
     ]
 
     # 테스트 실행
@@ -248,9 +252,9 @@ class TestVector2d_v0(TestCase):
   def test_abs(self):
     # 더미 데이터
     dummy = [
-      (Vector2d, (1, 2), 2.23606797749979),
-      (Vector2d, (1.0, 2.0), 2.23606797749979),
-      (Vector2d, (10.0, 25.0), 26.925824035672523)
+      (MyVector2d, (1, 2), 2.23606797749979),
+      (MyVector2d, (1.0, 2.0), 2.23606797749979),
+      (MyVector2d, (10.0, 25.0), 26.925824035672523)
     ]
 
     # 테스트 실행
@@ -273,9 +277,9 @@ class TestVector2d_v0(TestCase):
   def test_bool(self):
     # 더미 데이터
     dummy = [
-      (Vector2d, (0, 0), False),
-      (Vector2d, (1.0, 2.0), True),
-      (Vector2d, (10.0, 25.0), True)
+      (MyVector2d, (0, 0), False),
+      (MyVector2d, (1.0, 2.0), True),
+      (MyVector2d, (10.0, 25.0), True)
     ]
 
     # 테스트 실행
